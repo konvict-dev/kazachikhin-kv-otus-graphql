@@ -1,0 +1,115 @@
+scalar GraphQLDateTime
+scalar GraphQLEmail
+scalar GraphQLURL
+
+# Автор книги
+type Author {
+    id: Int!
+    name: String!
+    surname: String!
+    about: String
+    email: GraphQLEmail
+    site: GraphQLURL
+}
+
+# Издательство
+type Publisher {
+    id: Int!
+    name: String!
+    address: String
+    telephone: String
+    email: GraphQLEmail
+    site: GraphQLURL
+}
+
+# Комментарий к книге
+type Comment {
+    id: Int!
+    bookId: Int!,
+    author: String!
+    text: String!
+    publishedAt: GraphQLDateTime!
+}
+
+# Жанры
+enum Genre {
+    BIOGRAPHY
+    CLASSIC
+    CRIME
+    FANTASY
+    HUMOR
+    ROMANTIC
+    OTHER
+}
+
+# Книга
+type Book {
+    id: Int!
+    name: String!
+    authors: [Author!]
+    publisher: Publisher
+    genre: [Genre!]
+    year: Int
+    pages: Int
+    inStock: Boolean!
+    price: Float!
+    comments(limit: Int = 5): [Comment!]
+}
+
+# Порядок сортировки списка книг (по названию книг)
+enum Sort {
+    ASC
+    DESC
+}
+
+# Книга в корзине
+type BookInOrder {
+    book: Book!
+    count: Int!
+}
+
+# Покупательская корзина
+type Order {
+    books: [BookInOrder!]
+    discountPercentForUser: Float!
+    priceAll: Float!
+}
+
+# Количество книг, показываемых на одной странице
+enum CountBookOnPage {
+    LITTLE
+    MEDIUM
+    MANY
+}
+
+# Параметры запроса списка книг
+input ParametresBooks {
+    idAuthor: Int,
+    idPublisher: Int,
+    genre: Genre,
+    inStock: Boolean,
+    page: Int,
+    count: CountBookOnPage,
+    sort: Sort
+}
+
+# Запросы
+type Query {
+    author(id: Int): Author
+    book(id: Int): Book
+    books(param: ParametresBooks): [Book]
+    order(_temp: Boolean): Order
+}
+
+# Мутации
+type Mutation {
+    addBookToOrder(id: Int): Boolean
+    removeBookFromOrder(id: Int, all: Boolean): Boolean
+    clearOrder(_temp: Boolean): Boolean
+}
+
+# Схема
+schema {
+    query: Query
+    mutation: Mutation
+}

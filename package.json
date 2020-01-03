@@ -1,0 +1,19 @@
+{
+  "name": "kazachikhin-kv-otus-graphql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "keywords": [],
+  "author": "kazachikhin_kv",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "graphiql": "^0.17.5",
+    "graphql": "^14.5.8",
+    "graphql-custom-types": "^1.5.1"
+  }
+}
